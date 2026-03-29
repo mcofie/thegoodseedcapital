@@ -1,22 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Header scroll effect
-    const header = document.querySelector('header');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
 
-    // 2. Intersection Observer for scroll animations
+    /* 1. Graceful Editorial Reveals */
     const observerOptions = {
         root: null,
         rootMargin: '0px',
         threshold: 0.15
     };
 
-    const observer = new IntersectionObserver((entries, observer) => {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
@@ -25,22 +16,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    const revealElements = document.querySelectorAll('.reveal');
-    revealElements.forEach(el => observer.observe(el));
+    // Initial trigger for hero content
+    setTimeout(() => {
+        document.querySelectorAll('.fade-up').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if(rect.top < window.innerHeight) {
+                el.classList.add('active');
+            } else {
+                revealObserver.observe(el);
+            }
+        });
+    }, 100);
 
-    // 3. Smooth scrolling for nav links
+    /* 2. Soft Smooth Scroll */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
             const targetElement = document.querySelector(targetId);
+            
             if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                const navHeight = document.querySelector('.header-arboretum').offsetHeight;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
                 });
             }
         });
     });
+
 });
