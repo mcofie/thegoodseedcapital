@@ -19,17 +19,26 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
 ::selection {
     background-color: var(--color-forest);
     color: var(--bg-parchment);
+}
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
     background-color: var(--bg-white);
     color: var(--text-charcoal);
     line-height: 1.6;
-    overflow-x: hidden;
-    width: 100%;
 }
 
 /* Typography Arrays */
@@ -96,6 +105,7 @@ body {
 .pt-32 { padding-top: 8rem; }
 .pb-8 { padding-bottom: 2rem; }
 .pb-32 { padding-bottom: 8rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
 .pl-6 { padding-left: 1.5rem; }
 
 .w-full { width: 100%; }
