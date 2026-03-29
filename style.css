@@ -160,6 +160,15 @@ a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
 }
 .btn-outline:hover { border-color: var(--text-charcoal); background-color: var(--bg-parchment); }
 
+/* Magnetic Buttons Physics Transitions */
+.magnetic-btn {
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), background-color 0.3s, color 0.3s, border-color 0.3s;
+    will-change: transform;
+}
+.magnetic-btn:hover {
+    transition: transform 0.1s linear, background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
 .lg-btn { padding: 1.25rem 2.5rem; }
 
 .scroll-link { display: inline-flex; transition: transform 0.3s; }
@@ -169,6 +178,17 @@ a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
 .badge-parchment {
     padding: 0.4rem 1rem; border-radius: 50px;
     background-color: var(--bg-parchment); border: 1px solid var(--border-delicate);
+}
+
+/* Architectural Scroll Line */
+.scroll-tracer {
+    position: fixed;
+    top: 0; left: 0;
+    width: 2px;
+    height: 0%;
+    background-color: var(--color-forest);
+    z-index: 9999;
+    will-change: height;
 }
 
 /* Grids */
