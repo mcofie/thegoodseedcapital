@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const observerOptions = {
         root: null,
         rootMargin: '0px',
-        threshold: 0.15
+        threshold: 0.12
     };
 
     const revealObserver = new IntersectionObserver((entries, observer) => {
@@ -16,17 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, observerOptions);
 
-    // Initial trigger for hero content
+    // Initial trigger for in-viewport elements
     setTimeout(() => {
-        document.querySelectorAll('.fade-up').forEach(el => {
+        document.querySelectorAll('.fade-up, .reveal-title').forEach(el => {
             const rect = el.getBoundingClientRect();
-            if(rect.top < window.innerHeight) {
+            if (rect.top < window.innerHeight - 50) {
                 el.classList.add('active');
             } else {
                 revealObserver.observe(el);
             }
         });
-    }, 100);
+    }, 80);
 
     /* 2. Soft Smooth Scroll */
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
             const progress = (scrollTop / scrollHeight) * 100;
             tracer.style.height = progress + '%';
-        });
+        }, { passive: true });
     }
 
     /* 4. Magnetic Call-to-Action Physics */
@@ -64,18 +64,40 @@ document.addEventListener('DOMContentLoaded', () => {
     magneticBtns.forEach(btn => {
         btn.addEventListener('mousemove', (e) => {
             const rect = btn.getBoundingClientRect();
-            // Calculate distance of cursor from exact center of the element
             const x = e.clientX - rect.left - rect.width / 2;
             const y = e.clientY - rect.top - rect.height / 2;
-            
-            // Apply slight physical pull based on offset (30% intensity multiplier)
-            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            btn.style.transform = `translate(${x * 0.25}px, ${y * 0.25}px)`;
         });
 
         btn.addEventListener('mouseleave', () => {
-            // Spring/Snap back cleanly to origin
             btn.style.transform = 'translate(0px, 0px)';
         });
     });
+
+    /* 5. Ambient Artwork Mouse Parallax */
+    if (window.innerWidth > 992) {
+        const parallaxLayers = [
+            { container: '.hero-arboretum', target: '.botanical-art', speed: 12 },
+            { container: '.partnership-arboretum', target: '.handshake-art', speed: 10 },
+            { container: '.cta-arboretum', target: '.cta-arboretum img', speed: 8 }
+        ];
+
+        parallaxLayers.forEach(({ container, target, speed }) => {
+            const wrap = document.querySelector(container);
+            const art = wrap ? wrap.querySelector(target) : null;
+            if (!wrap || !art) return;
+
+            wrap.addEventListener('mousemove', (e) => {
+                const rect = wrap.getBoundingClientRect();
+                const relX = ((e.clientX - rect.left) / rect.width - 0.5) * speed;
+                const relY = ((e.clientY - rect.top) / rect.height - 0.5) * speed;
+                art.style.transform = `translate3d(${relX}px, ${relY}px, 0)`;
+            });
+
+            wrap.addEventListener('mouseleave', () => {
+                art.style.transform = '';
+            });
+        });
+    }
 
 });

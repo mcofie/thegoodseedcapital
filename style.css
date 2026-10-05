@@ -50,7 +50,19 @@ body {
 .fw-500 { font-weight: 500; }
 .fw-600 { font-weight: 600; }
 
-.italic-soft { font-style: italic; font-weight: 300; }
+.italic-soft { 
+    font-style: italic; 
+    font-weight: 300;
+    background: linear-gradient(135deg, var(--text-charcoal) 0%, #1A3C34 50%, var(--text-charcoal) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    transition: background-position 0.6s ease;
+}
+.italic-soft:hover {
+    background-position: 100% center;
+}
 .uppercase { text-transform: uppercase; }
 .tracking-tight { letter-spacing: -0.03em; }
 .tracking-wide { letter-spacing: 0.05em; }
@@ -398,30 +410,118 @@ a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
 .group:hover .portfolio-image { transform: scale(1.05); }
 .transition-transform { transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
 
+/* Cinematic Masked Text Reveal */
+.reveal-title {
+    overflow: hidden;
+}
+.reveal-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+}
+.reveal-line > span {
+    display: inline-block;
+    transform: translateY(115%);
+    opacity: 0;
+    transition: transform 0.95s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.75s ease;
+    will-change: transform, opacity;
+}
+.reveal-title.active .reveal-line > span,
+.active .reveal-title .reveal-line > span,
+.active.reveal-title .reveal-line > span {
+    transform: translateY(0);
+    opacity: 1;
+}
+.reveal-line:nth-child(2) > span { transition-delay: 0.12s; }
+.reveal-line:nth-child(3) > span { transition-delay: 0.24s; }
+
 /* Editorial Entrances */
 .fade-up {
-    opacity: 0; transform: translateY(30px);
-    transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1), transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0; 
+    transform: translateY(24px);
+    transition: opacity 1s cubic-bezier(0.19, 1, 0.22, 1), transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity, transform;
 }
-.fade-up.active { opacity: 1; transform: translateY(0); }
+.fade-up.active { 
+    opacity: 1; 
+    transform: translateY(0); 
+}
 
 /* Disable animations on mobile for smoother horizontal scroll prevention */
 @media (max-width: 768px) {
+    .reveal-line > span { transform: none; opacity: 1; transition: none; }
     .fade-up { opacity: 1; transform: none; transition: none; }
 }
 
-.delay-1 { transition-delay: 0.15s; }
-.delay-2 { transition-delay: 0.3s; }
+.delay-1 { transition-delay: 0.12s; }
+.delay-2 { transition-delay: 0.24s; }
+.delay-3 { transition-delay: 0.36s; }
+
+/* Animated Nav Links */
+.desktop-nav .nav-link {
+    position: relative;
+    padding-bottom: 4px;
+}
+.desktop-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1.5px;
+    background-color: var(--color-forest);
+    transition: width 0.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.desktop-nav .nav-link:hover::after {
+    width: 100%;
+}
+
+/* Hero Ambient Aura Glow */
+.hero-imagery {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.hero-imagery::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(26, 60, 52, 0.08) 0%, rgba(251, 249, 246, 0) 70%);
+    border-radius: 50%;
+    filter: blur(35px);
+    pointer-events: none;
+    animation: ambient-aura 6s ease-in-out infinite alternate;
+}
+@keyframes ambient-aura {
+    0% { transform: translate(-50%, -50%) scale(0.9); opacity: 0.4; }
+    100% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.85; }
+}
 
 /* Organic Levitation Keyframes */
 @keyframes organic-levitate {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    35% { transform: translateY(-10px) rotate(0.6deg); }
+    70% { transform: translateY(-4px) rotate(-0.4deg); }
 }
 
 .animate-levitate {
-    animation: organic-levitate 8s ease-in-out infinite;
+    animation: organic-levitate 7s ease-in-out infinite;
     will-change: transform;
+}
+
+/* Two-Way Bridge Interactive Lift */
+.bridge-card {
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+.bridge-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(0, 12, 9, 0.06);
+    border-color: var(--color-forest);
 }
 
 /* New Institutional Components */
